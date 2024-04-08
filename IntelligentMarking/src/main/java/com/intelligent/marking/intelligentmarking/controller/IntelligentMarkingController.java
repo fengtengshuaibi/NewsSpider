@@ -1,5 +1,6 @@
 package com.intelligent.marking.intelligentmarking.controller;
 
+import com.intelligent.marking.intelligentmarking.scheduletask.ScheduledTasks;
 import com.intelligent.marking.intelligentmarking.service.IntelligentMarkingService;
 import com.intelligent.marking.intelligentmarking.vo.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/im")
 public class IntelligentMarkingController
 {
+    @Autowired
+    ScheduledTasks scheduledTasks;
     //每日经济新闻
     private static String URL = "http://apiv2.nbd.com.cn/article_lists/multi_columns_article_lists.json?app_key=d401a38c50a567882cd71cec43201c78&app_version_name=7.2.5&column_ids=1838&timestamp=1700666476&uuid=9aa9802925b94a5b83b3ffe50e188458";
     //每日财经热点榜
@@ -58,5 +61,10 @@ public class IntelligentMarkingController
     public JsonData getsourceintodatabase() throws Exception {
         return intelligentMarkingService.getsourceintodatabase(URL4,URL5,URL6);
 
+    }
+
+    @GetMapping("/getkeywords4")
+    public JsonData intelligentMarking4() throws Exception {
+        return scheduledTasks.getNews();
     }
 }

@@ -138,10 +138,16 @@ public class SohuNewsPuller implements NewsPuller {
                         newsExample2.createCriteria().andTitleEqualTo(title);
                         List<News> list2 = newsMapper.selectByExample(newsExample);
                         if (list.size() == 0 && list2.size() == 0) {
-                            news3.setTitle(title);
-                            news3.setImage(imgSrc);
-                            newsSet.add(news3);
-
+                            for (News news1 : newsSet) {
+                                if (news1.getUrl().equals(href)
+                                        || news1.getTitle().equals(title)) {
+                                    logger.info("该新闻已存在，不放入集合中");
+                                } else {
+                                    news3.setTitle(title);
+                                    news3.setImage(imgSrc);
+                                    newsSet.add(news3);
+                                }
+                            }
                         }
                     }
                     logger.info("新闻链接放入集合中成功！", news.getTitle());
