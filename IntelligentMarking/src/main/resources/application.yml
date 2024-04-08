@@ -22,7 +22,7 @@ roll:
 # urls
 news:
   neteasy:
-    url: http://news.163.com/
+    url: https://money.163.com/special/00252G50/macro.html
   toutiao:
     url: https://www.toutiao.com/ch/news_hot/
   sohu:
