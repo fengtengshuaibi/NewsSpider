@@ -22,7 +22,8 @@ roll:
 # urls
 news:
   neteasy:
-    url: https://money.163.com/special/00252G50/macro.html
+    macrourl: https://money.163.com/special/00252G50/macro.html
+    nationurl: https://money.163.com/special/00252C1E/gjcj.html
   toutiao:
     url: https://www.toutiao.com/ch/news_hot/
   sohu:

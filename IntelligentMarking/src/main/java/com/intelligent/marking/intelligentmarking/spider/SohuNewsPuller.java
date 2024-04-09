@@ -128,25 +128,28 @@ public class SohuNewsPuller implements NewsPuller {
                         String title = item.select(".title").text();
                         // 获取图片src属性
                         String imgSrc = item.select(".img img").attr("src");
-                        News news3 = new News();
-                        BeanUtils.copyProperties(news, news3);
-                        news3.setUrl(href);
                         NewsExample newsExample = new NewsExample();
                         newsExample.createCriteria().andUrlEqualTo(href);
                         List<News> list = newsMapper.selectByExample(newsExample);
                         NewsExample newsExample2 = new NewsExample();
                         newsExample2.createCriteria().andTitleEqualTo(title);
                         List<News> list2 = newsMapper.selectByExample(newsExample);
+                        int count = 0;
                         if (list.size() == 0 && list2.size() == 0) {
                             for (News news1 : newsSet) {
                                 if (news1.getUrl().equals(href)
                                         || news1.getTitle().equals(title)) {
-                                    logger.info("该新闻已存在，不放入集合中");
-                                } else {
-                                    news3.setTitle(title);
-                                    news3.setImage(imgSrc);
-                                    newsSet.add(news3);
+                                    count++;
                                 }
+                            }
+                            if (count == 0) {
+                                News news3 = new News();
+                                BeanUtils.copyProperties(news, news3);
+                                news3.setUrl(href);
+                                news3.setTitle(title);
+                                news3.setImage(imgSrc);
+                                newsSet.add(news3);
+                                logger.info("新闻链接放入集合中成功！", news.getTitle());
                             }
                         }
                     }

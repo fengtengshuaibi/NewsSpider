@@ -28,8 +28,11 @@ public class NewsController {
 
     private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
     @Autowired
-    @Qualifier("netEasyNewsPuller")
-    private NewsPuller neteasyNewsPuller;
+    @Qualifier("netEasyMacroNewsPuller")
+    private NewsPuller netEasyMacroNewsPuller;
+    @Autowired
+    @Qualifier("netEasyNationalNewsPuller")
+    private NewsPuller netEasyNationalNewsPuller;
     @Autowired
     @Qualifier("toutiaoNewsPuller")
     private NewsPuller toutiaoNewsPuller;
@@ -42,10 +45,16 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
-    @ApiOperation(value = "爬虫拉取网易新闻")
-    @GetMapping("/pull/neteasy")
-    public void pullNeteasyNews() {
-        neteasyNewsPuller.pullNews();
+    @ApiOperation(value = "爬虫拉取网易宏观新闻")
+    @GetMapping("/pull/neteasyMacro")
+    public void pullNeteasyMacroNews() {
+        netEasyMacroNewsPuller.pullNews();
+    }
+
+    @ApiOperation(value = "爬虫拉取网易国际新闻")
+    @GetMapping("/pull/neteasyNation")
+    public void pullNeteasyNationNews() {
+        netEasyNationalNewsPuller.pullNews();
     }
 
     @ApiOperation(value = "爬虫拉取今日头条新闻")
