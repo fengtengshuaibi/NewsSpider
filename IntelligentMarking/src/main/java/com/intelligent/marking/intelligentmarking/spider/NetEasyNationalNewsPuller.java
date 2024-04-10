@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * 网易财经-国际新闻
+ * 网易财经-宏观新闻(国际新闻算作了宏观新闻)
  */
 @Component("netEasyNationalNewsPuller")
 public class NetEasyNationalNewsPuller implements NewsPuller {
@@ -66,7 +66,7 @@ public class NetEasyNationalNewsPuller implements NewsPuller {
                 news.setTitle(title);
                 news.setUrl(href);
                 news.setNewstype1("财经");
-                news.setNewstype2("国际新闻");
+                news.setNewstype2("宏观");
                 news.setCreateDate(new Date());
                 newsType1Set.add(news);
             }
