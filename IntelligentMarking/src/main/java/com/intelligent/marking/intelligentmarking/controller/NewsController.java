@@ -34,6 +34,9 @@ public class NewsController {
     @Qualifier("netEasyNationalNewsPuller")
     private NewsPuller netEasyNationalNewsPuller;
     @Autowired
+    @Qualifier("netEasyFundNewsPuller")
+    private NewsPuller netEasyFundNewsPuller;
+    @Autowired
     @Qualifier("toutiaoNewsPuller")
     private NewsPuller toutiaoNewsPuller;
     @Autowired
@@ -55,6 +58,12 @@ public class NewsController {
     @GetMapping("/pull/neteasyNation")
     public void pullNeteasyNationNews() {
         netEasyNationalNewsPuller.pullNews();
+    }
+
+    @ApiOperation(value = "爬虫拉取网易基金新闻")
+    @GetMapping("/pull/neteasyFund")
+    public void pullNeteasyFundNews() {
+        netEasyFundNewsPuller.pullNews();
     }
 
     @ApiOperation(value = "爬虫拉取今日头条新闻")

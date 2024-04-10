@@ -41,8 +41,6 @@ public class NetEasyNationalNewsPuller implements NewsPuller {
     @Override
     public void pullNews() {
         HashSet<News> newsType1Set = new HashSet();
-        HashSet<News> newsType2Set = new HashSet();
-        HashSet<News> newsSet = new HashSet();
         List<News> newsList = new ArrayList<>();
         logger.info("开始拉取网易财经-国际新闻！");
         // 1.获取首页
