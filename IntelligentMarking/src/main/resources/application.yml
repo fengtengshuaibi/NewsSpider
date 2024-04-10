@@ -29,7 +29,7 @@ news:
   sohu:
     url: http://news.sohu.com/
   ifeng:
-    url: http://www.ifeng.com/
+    url: https://finance.ifeng.com/
 # logging
 logging:
   level:
