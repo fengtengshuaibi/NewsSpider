@@ -22,9 +22,13 @@ roll:
 # urls
 news:
   neteasy:
+    #宏观
     macrourl: https://money.163.com/special/00252G50/macro.html
+    #国际
     nationurl: https://money.163.com/special/00252C1E/gjcj.html
+    #基金
     fundurl: https://money.163.com/fund/
+    #理财
     moneyurl: https://money.163.com/special/licainews/
   toutiao:
     url: https://www.toutiao.com/ch/news_hot/
@@ -32,6 +36,13 @@ news:
     url: http://news.sohu.com/
   ifeng:
     url: https://finance.ifeng.com/
+  sina:
+    #外汇
+    forexrul: https://finance.sina.com.cn/forex/
+    #基金
+    fundurl: https://finance.sina.com.cn/fund/
+    #股票
+    stockurl: https://finance.sina.com.cn/stock/
 # logging
 logging:
   level:

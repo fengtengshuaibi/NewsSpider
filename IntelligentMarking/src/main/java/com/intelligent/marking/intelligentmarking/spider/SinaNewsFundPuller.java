@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,16 +28,14 @@ public class SinaNewsFundPuller implements NewsPuller {
 
     @Autowired
     NewsMapper newsMapper;
-
+    @Value("${news.sina.fundurl}")
+    private String homeUrl;
     @Autowired
     private IBatchDAO iBatchDAO;
 
     @Override
     public void pullNews() {
         List<News> newsList = new ArrayList<>();
-        // 要爬取的首页 URL
-        String homeUrl = "https://finance.sina.com.cn/fund/";
-
         try {
             // 获取首页内容
             Document homeDoc = Jsoup.connect(homeUrl).get();

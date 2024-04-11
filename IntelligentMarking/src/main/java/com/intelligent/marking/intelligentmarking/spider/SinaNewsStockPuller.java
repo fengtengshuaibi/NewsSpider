@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -26,7 +27,8 @@ public class SinaNewsStockPuller implements NewsPuller {
 
     @Autowired
     NewsMapper newsMapper;
-
+    @Value("${news.sina.stockurl}")
+    private String homeUrl;
     @Autowired
     private IBatchDAO iBatchDAO;
 
