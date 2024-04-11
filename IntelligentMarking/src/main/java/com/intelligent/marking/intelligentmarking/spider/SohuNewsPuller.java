@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component("sohuNewsPuller")
 public class SohuNewsPuller implements NewsPuller {
@@ -160,17 +162,24 @@ public class SohuNewsPuller implements NewsPuller {
                 }
             });
         }
-
         if (newsSet.size() > 0) {
             // 6.便利每个新闻详情链接，获取正文
             newsSet.forEach(news -> {
+                String timestr = sf.format(new Date());
                 logger.info("开始根据新闻url访问新闻，获取新闻内容：{}", news.getUrl());
                 Document newsHtml = null;
                 try {
                     newsHtml = getHtmlFromUrl(news.getUrl(), false);
                     Elements articles = newsHtml.select("div.text").select("article.article");
                     Elements time = newsHtml.select("div.text").select("span.time");
-                    String timestr = time.get(0).text() + ":00";
+                    // 正则表达式匹配yyyy-mm-dd HH:MM:SS格式的日期时间
+                    String regex = "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(time.get(0).text());
+                    while (matcher.find()) {
+                        // 直接提取匹配到的日期时间字符串
+                        timestr = matcher.group(1).toString() + ":00";
+                    }
                     news.setNewsDate(sf.parse(timestr));
                     News news4 = new News();
                     for (Element article : articles) {
