@@ -48,6 +48,18 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    @Qualifier("sinaNewsStockPuller")
+    private NewsPuller sinaNewsStockPuller;
+
+    @Autowired
+    @Qualifier("sinaNewsFundPuller")
+    private NewsPuller sinaNewsFundPuller;
+
+    @Autowired
+    @Qualifier("sinaNewsForexPuller")
+    private NewsPuller sinaNewsForexPuller;
+
     @ApiOperation(value = "爬虫拉取网易宏观新闻")
     @GetMapping("/pull/neteasyMacro")
     public void pullNeteasyMacroNews() {
@@ -81,6 +93,24 @@ public class NewsController {
     @GetMapping("/pull/ifeng")
     public void pullIfengNews() {
         ifengNewsPuller.pullNews();
+    }
+
+    @ApiOperation(value = "爬虫拉取新浪股票新闻")
+    @GetMapping("/pull/sinaStock")
+    public void pullSinaStock() {
+        sinaNewsStockPuller.pullNews();
+    }
+
+    @ApiOperation(value = "爬虫拉取新浪基金新闻")
+    @GetMapping("/pull/sinaFund")
+    public void pullSinaFund() {
+        sinaNewsFundPuller.pullNews();
+    }
+
+    @ApiOperation(value = "爬虫拉取新浪外汇新闻")
+    @GetMapping("/pull/sinaForex")
+    public void pullSinaForex() {
+        sinaNewsForexPuller.pullNews();
     }
 
     @ApiOperation(value = "获取{source}新闻")
