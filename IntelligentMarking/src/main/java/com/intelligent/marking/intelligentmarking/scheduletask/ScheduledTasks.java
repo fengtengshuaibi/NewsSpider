@@ -114,37 +114,40 @@ public class ScheduledTasks {
                                 String videoUrl = null;
                                 String imageUrl = null;
                                 String content = null;
-                                for (Map<String, Object> newsdetailmap : newsdetaillist) {
-                                    BeanUtils.copyProperties(imNewsSource1, imNewsSource2);
-                                    if (newsdetailmap.get("videoUrl") != null && !StringUtils.isEmpty(newsdetailmap.get("videoUrl").toString())) {
-                                        videoUrl = JSON.toJSONString(newsdetailmap.get("videoUrl"));
+                                if (newsdetaillist != null && newsdetaillist.size() > 0) {
+                                    for (Map<String, Object> newsdetailmap : newsdetaillist) {
+                                        BeanUtils.copyProperties(imNewsSource1, imNewsSource2);
+                                        if (newsdetailmap.get("videoUrl") != null && !StringUtils.isEmpty(newsdetailmap.get("videoUrl").toString())) {
+                                            videoUrl = JSON.toJSONString(newsdetailmap.get("videoUrl"));
+                                        }
+                                        if (newsdetailmap.get("imageUrl") != null && !StringUtils.isEmpty(newsdetailmap.get("imageUrl").toString())) {
+                                            imageUrl = JSON.toJSONString(newsdetailmap.get("imageUrl"));
+                                        }
+                                        if (newsdetailmap.get("content") != null && !StringUtils.isEmpty(newsdetailmap.get("content").toString())) {
+                                            content = (String) newsdetailmap.get("content");
+                                        }
+                                        if (!StringUtils.isEmpty(videoUrl) && videoUrl != null) {
+                                            videoUrlStr.append(videoUrl + ",");
+                                        }
+                                        if (!StringUtils.isEmpty(imageUrl) && imageUrl != null) {
+                                            imgUrlStr.append(imageUrl + ",");
+                                        }
+                                        if (!StringUtils.isEmpty(content) && content != null) {
+                                            contentStr.append(content + "。");
+                                        }
                                     }
-                                    if (newsdetailmap.get("imageUrl") != null && !StringUtils.isEmpty(newsdetailmap.get("imageUrl").toString())) {
-                                        imageUrl = JSON.toJSONString(newsdetailmap.get("imageUrl"));
+                                    if (videoUrlStr != null || !StringUtils.isEmpty(videoUrlStr.toString())) {
+                                        imNewsSource2.setVideourl(videoUrlStr.toString());
                                     }
-                                    if (newsdetailmap.get("content") != null && !StringUtils.isEmpty(newsdetailmap.get("content").toString())) {
-                                        content = (String) newsdetailmap.get("content");
+                                    if (imgUrlStr != null || !StringUtils.isEmpty(imgUrlStr.toString())) {
+                                        imNewsSource2.setImageurl(imgUrlStr.toString());
                                     }
-                                    if (!StringUtils.isEmpty(videoUrl) && videoUrl != null) {
-                                        videoUrlStr.append(videoUrl + ",");
+                                    if (contentStr != null || !StringUtils.isEmpty(contentStr.toString())) {
+                                        imNewsSource2.setContent(contentStr.toString());
                                     }
-                                    if (!StringUtils.isEmpty(imageUrl) && imageUrl != null) {
-                                        imgUrlStr.append(imageUrl + ",");
-                                    }
-                                    if (!StringUtils.isEmpty(content) && content != null) {
-                                        contentStr.append(content + "。");
-                                    }
+                                    datalist.add(imNewsSource2);
                                 }
-                                if (videoUrlStr != null || !StringUtils.isEmpty(videoUrlStr.toString())) {
-                                    imNewsSource2.setVideourl(videoUrlStr.toString());
-                                }
-                                if (imgUrlStr != null || !StringUtils.isEmpty(imgUrlStr.toString())) {
-                                    imNewsSource2.setImageurl(imgUrlStr.toString());
-                                }
-                                if (contentStr != null || !StringUtils.isEmpty(contentStr.toString())) {
-                                    imNewsSource2.setContent(contentStr.toString());
-                                }
-                                datalist.add(imNewsSource2);
+
                             } else {
                                 log.info("根据newsid查询新闻详情失败，{}");
                                 return new JsonData().fail("1", "根据newsid查询新闻详情失败");
