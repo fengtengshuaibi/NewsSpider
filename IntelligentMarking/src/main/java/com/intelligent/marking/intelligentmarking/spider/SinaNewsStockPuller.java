@@ -67,7 +67,7 @@ public class SinaNewsStockPuller implements NewsPuller {
                     String title = linkDoc.selectFirst("h1.main-title").text();
                     String content = linkDoc.selectFirst("div.article#artibody").text();
                     String dateText = linkDoc.selectFirst("span.date").text();
-                    logger.info("Fetched article: title={}, content={}, date={}", title, content, dateText);
+                    logger.info("Fetched article: title={},  date={}", title, dateText);
 
                     // 获取正文中的图片链接
                     Elements imgTags = linkDoc.select("div.article#artibody img");
