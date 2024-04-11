@@ -23,15 +23,15 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * 网易财经-基金新闻
+ * 网易财经-理财新闻
  */
-@Component("netEasyFundNewsPuller")
-public class NetEasyFundNewsPuller implements NewsPuller {
+@Component("netEasyMoneyNewsPuller")
+public class NetEasyMoneyNewsPuller implements NewsPuller {
     private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    private static final Logger logger = LoggerFactory.getLogger(NetEasyFundNewsPuller.class);
+    private static final Logger logger = LoggerFactory.getLogger(NetEasyMoneyNewsPuller.class);
     @Autowired
     NewsMapper newsMapper;
-    @Value("${news.neteasy.fundurl}")
+    @Value("${news.neteasy.moneyurl}")
     private String url;
     @Autowired
     private NewsService newsService;
@@ -44,29 +44,28 @@ public class NetEasyFundNewsPuller implements NewsPuller {
         HashSet<News> newsType2Set = new HashSet();
         HashSet<News> newsSet = new HashSet();
         List<News> newsList = new ArrayList<>();
-        logger.info("开始拉取网易财经-基金新闻！");
+        logger.info("开始拉取网易财经-理财新闻！");
         // 1.获取首页
         Document html = null;
         try {
             html = getHtmlFromUrl(url, false);
         } catch (Exception e) {
-            logger.error("==============拉取网易财经-基金新闻失败: {}=============", url);
+            logger.error("==============拉取网易财经-理财新闻失败: {}=============", url);
             e.printStackTrace();
             return;
         }
-        Element newsElement = html.select("div.focus_body").first();
-        if (newsElement != null) {
-            Elements links = newsElement.select("li[ne-role=slide-page] > a");
-            for (Element link : links) {
+        Elements newsElements = html.select("div.col_l").select("h2 a");
+        if (newsElements != null) {
+            for (Element link : newsElements) {
                 String href = link.attr("href");
-                String title = link.attr("title");
+                String title = link.text();
                 News news = new News();
                 news.setTitle(title);
                 news.setUrl(href);
                 news.setCreateDate(new Date());
                 news.setSource("网易");
                 news.setNewstype1("财经");
-                news.setNewstype2("基金");
+                news.setNewstype2("理财");
                 newsType1Set.add(news);
             }
         }
@@ -107,13 +106,13 @@ public class NetEasyFundNewsPuller implements NewsPuller {
                     if (list.size() == 0 && list2.size() == 0) {
                         newsList.add(news1);
                     }
-                    logger.info("抽取网易基金新闻《{}》成功！", news.getTitle());
+                    logger.info("抽取网易理财新闻《{}》成功！", news.getTitle());
                 } catch (Exception e) {
-                    logger.error("网易基金新闻抽取失败:{}", news.getUrl());
+                    logger.error("网易理财新闻抽取失败:{}", news.getUrl());
                     e.printStackTrace();
                 }
             });
-            logger.info("网易基金新闻拉取完成！");
+            logger.info("网易理财新闻拉取完成！");
         }
 
 
