@@ -25,6 +25,7 @@ news:
     macrourl: https://money.163.com/special/00252G50/macro.html
     nationurl: https://money.163.com/special/00252C1E/gjcj.html
     fundurl: https://money.163.com/fund/
+    moneyurl: https://money.163.com/special/licainews/
   toutiao:
     url: https://www.toutiao.com/ch/news_hot/
   sohu:
