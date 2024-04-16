@@ -81,7 +81,7 @@ public class NewsController {
         netEasyFundNewsPuller.pullNews();
     }
 
-    @ApiOperation(value = "爬虫拉取网易基金新闻")
+    @ApiOperation(value = "爬虫拉取网易理财新闻")
     @GetMapping("/pull/neteasyMoney")
     public void pullNeteasyMoneyNews() {
         netEasyMoneyNewsPuller.pullNews();
