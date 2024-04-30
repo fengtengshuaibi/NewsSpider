@@ -105,61 +105,148 @@ public class SohuNewsPuller implements NewsPuller {
                         logger.error("遍历一级分类过程中失败:{}", news.getUrl());
                         e.printStackTrace();
                     }
-                }
+                } else if ("体育".equals(news.getNewstype1())) {
+                    logger.info("开始遍历一级分类：{}", news.getUrl());
+                    Document newsHtml = null;
+                    try {
+                        newsHtml = getHtmlFromUrl(news.getUrl(), false);
+                        Elements newsType2Elements = newsHtml.select("div.nav_content_item");
+                        Elements aElements = newsType2Elements.select("a");
+                        for (Element eduLink : aElements) {
+                            if (eduLink != null) {
+                                String href = eduLink.attr("href");
+                                String newstype2 = eduLink.text();
+                                if (!"视频".equals(newstype2) && !"更多".equals(newstype2) && !"冠军".equals(newstype2)) {
+                                    //二级分类
+                                    logger.info("开始查找二级分类：" + newstype2);
+                                    News news2 = new News();
+                                    BeanUtils.copyProperties(news, news2);
+                                    news2.setUrl(href);
+                                    news2.setNewstype2(newstype2);
+                                    newstype2Set.add(news2);
+                                    logger.info("二级分类放到集合中完成");
+                                }
 
+                            } else {
+                                System.out.println("未找到a标签");
+                            }
+                        }
+//                        Element eduLink = newsType2Elements.select("a").first();
+
+                    } catch (Exception e) {
+                        logger.error("遍历一级分类过程中失败:{}", news.getUrl());
+                        e.printStackTrace();
+                    }
+                }
             });
         }
         if (newstype2Set.size() > 0) {
             // 5.遍历二级分类，获取新闻链接和正文
             newstype2Set.forEach(news -> {
-                logger.info("开始遍历二级分类：{}", news.getUrl());
-                Document newsHtml = null;
-                try {
-                    newsHtml = getHtmlFromUrl("https://www.sohu.com" + news.getUrl(), false);
-                    Elements newsElements = newsHtml.select("div.side_item");
+                //根据新闻一级分类分别制定不同的爬取方式
+                logger.info("开始遍历一级分类：{}", news.getNewstype1());
+                logger.info("开始遍历{},二级分类：{}", news.getNewstype1(), news.getUrl());
+                if ("教育".equals(news.getNewstype1())) {
+                    Document newsHtml = null;
+                    try {
+                        newsHtml = getHtmlFromUrl(news.getUrl().startsWith("http") ? news.getUrl() : "https://www.sohu.com" + news.getUrl(), false);
+                        Elements newsElements = newsHtml.select("div.side_item");
 //                    int i=0;
-                    for (Element item : newsElements) {
+                        for (Element item : newsElements) {
 //                        if (i!=0){
-                        // 获取href属性，需要注意的是href属性值可能是相对路径，需要根据实际情况转换为完整URL
-                        String href = item.select("a").attr("href");
-                        // 补全相对URL（如果需要）
-                        if (!href.startsWith("http")) {
-                            href = "https:" + href;
-                        }
-                        // 获取标题文本
-                        String title = item.select(".title").text();
-                        // 获取图片src属性
-                        String imgSrc = item.select(".img img").attr("src");
-                        NewsExample newsExample = new NewsExample();
-                        newsExample.createCriteria().andUrlEqualTo(href);
-                        List<News> list = newsMapper.selectByExample(newsExample);
-                        NewsExample newsExample2 = new NewsExample();
-                        newsExample2.createCriteria().andTitleEqualTo(title);
-                        List<News> list2 = newsMapper.selectByExample(newsExample);
-                        int count = 0;
-                        if (list.size() == 0 && list2.size() == 0) {
-                            for (News news1 : newsSet) {
-                                if (news1.getUrl().equals(href)
-                                        || news1.getTitle().equals(title)) {
-                                    count++;
+                            // 获取href属性，需要注意的是href属性值可能是相对路径，需要根据实际情况转换为完整URL
+                            String href = item.select("a").attr("href");
+                            // 补全相对URL（如果需要）
+                            if (!href.startsWith("http")) {
+                                href = "https://www.sohu.com" + href;
+                            }
+                            // 获取标题文本
+                            String title = item.select(".title").text();
+                            // 获取图片src属性
+                            String imgSrc = item.select(".img img").attr("src");
+                            NewsExample newsExample = new NewsExample();
+                            newsExample.createCriteria().andUrlEqualTo(href);
+                            List<News> list = newsMapper.selectByExample(newsExample);
+                            NewsExample newsExample2 = new NewsExample();
+                            newsExample2.createCriteria().andTitleEqualTo(title);
+                            List<News> list2 = newsMapper.selectByExample(newsExample);
+                            int count = 0;
+                            if (list.size() == 0 && list2.size() == 0) {
+                                for (News news1 : newsSet) {
+                                    if (news1.getUrl().equals(href)
+                                            || news1.getTitle().equals(title)) {
+                                        count++;
+                                    }
+                                }
+                                if (count == 0) {
+                                    News news3 = new News();
+                                    BeanUtils.copyProperties(news, news3);
+                                    news3.setUrl(href);
+                                    news3.setTitle(title);
+                                    news3.setImage(imgSrc);
+                                    newsSet.add(news3);
+                                    logger.info("新闻链接放入集合中成功！", news.getTitle());
                                 }
                             }
-                            if (count == 0) {
-                                News news3 = new News();
-                                BeanUtils.copyProperties(news, news3);
-                                news3.setUrl(href);
-                                news3.setTitle(title);
-                                news3.setImage(imgSrc);
-                                newsSet.add(news3);
-                                logger.info("新闻链接放入集合中成功！", news.getTitle());
+                        }
+                        logger.info("新闻链接放入集合中成功！", news.getTitle());
+                    } catch (Exception e) {
+                        logger.error("新闻链接放入集合中失败:{}", news.getUrl());
+                        e.printStackTrace();
+                    }
+                } else if ("体育".equals(news.getNewstype1())) {
+                    if ("马术".equals(news.getNewstype2())) {
+                        Document newsHtml = null;
+                        try {
+                            newsHtml = getHtmlFromUrl(news.getUrl(), false);
+                            Elements newsElements = newsHtml.select("div.swiper-slide");
+//                    int i=0;
+                            for (Element item : newsElements) {
+//                        if (i!=0){
+                                // 获取href属性，需要注意的是href属性值可能是相对路径，需要根据实际情况转换为完整URL
+                                String href = item.select("a").attr("href");
+                                // 补全相对URL（如果需要）
+                                if (!href.startsWith("http")) {
+                                    href = "https://www.sohu.com" + href;
+                                }
+                                // 获取标题文本
+                                String title = item.select("div.shadow-box").text();
+                                // 获取图片src属性
+                                String imgSrc = item.select(".img img").attr("src");
+                                NewsExample newsExample = new NewsExample();
+                                newsExample.createCriteria().andUrlEqualTo(href);
+                                List<News> list = newsMapper.selectByExample(newsExample);
+                                NewsExample newsExample2 = new NewsExample();
+                                newsExample2.createCriteria().andTitleEqualTo(title);
+                                List<News> list2 = newsMapper.selectByExample(newsExample);
+                                int count = 0;
+                                if (list.size() == 0 && list2.size() == 0) {
+                                    for (News news1 : newsSet) {
+                                        if (news1.getUrl().equals(href)
+                                                || news1.getTitle().equals(title)) {
+                                            count++;
+                                        }
+                                    }
+                                    if (count == 0) {
+                                        News news3 = new News();
+                                        BeanUtils.copyProperties(news, news3);
+                                        news3.setUrl(href.replace("https://www.sohu.com//www.sohu.com", "https://www.sohu.com"));
+                                        news3.setTitle(title);
+                                        news3.setImage(imgSrc);
+                                        newsSet.add(news3);
+                                        logger.info("新闻链接放入集合中成功！", news.getTitle());
+                                    }
+                                }
                             }
+                            logger.info("新闻链接放入集合中成功！", news.getTitle());
+                        } catch (Exception e) {
+                            logger.error("新闻链接放入集合中失败:{}", news.getUrl());
+                            e.printStackTrace();
                         }
                     }
-                    logger.info("新闻链接放入集合中成功！", news.getTitle());
-                } catch (Exception e) {
-                    logger.error("新闻链接放入集合中失败:{}", news.getUrl());
-                    e.printStackTrace();
                 }
+
+
             });
         }
         if (newsSet.size() > 0) {
