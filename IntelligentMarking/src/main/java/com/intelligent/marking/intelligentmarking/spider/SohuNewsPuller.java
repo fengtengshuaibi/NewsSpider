@@ -181,7 +181,7 @@ public class SohuNewsPuller implements NewsPuller {
                                 if (count == 0) {
                                     News news3 = new News();
                                     BeanUtils.copyProperties(news, news3);
-                                    news3.setUrl(href);
+                                    news3.setUrl(href.replace("https://www.sohu.com//www.sohu.com", "https://www.sohu.com"));
                                     news3.setTitle(title);
                                     news3.setImage(imgSrc);
                                     newsSet.add(news3);
