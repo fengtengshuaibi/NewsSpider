@@ -104,7 +104,7 @@ public class SohuNewsPuller implements NewsPuller {
         Map<String, List<String>> newsType1AndNewsType2Map = new HashMap<>();
         for (Element a : newsATags) {
             //新闻内容一级分类
-            String newstype1 = a.childNode(0).childNode(0).toString();
+            String newstype1 = a.text();
             //内容分类网页链接
             String href = a.childNode(0).attr("href");
             News n = new News();
