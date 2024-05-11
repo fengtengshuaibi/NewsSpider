@@ -202,10 +202,15 @@ public class SohuNewsPuller implements NewsPuller {
                     if (!href.startsWith("http")) {
                         href = "https://www.sohu.com" + href;
                     }
+                    String title = "";
                     // 获取标题文本
-                    String title = item.select(".title").text();
+                    if ("教育".equals(news.getNewstype1())) {
+                        title = item.select(".title").text();
+                    } else if ("体育".equals(news.getNewstype1())) {
+                        title = item.text();
+                    }
                     // 获取图片src属性
-                    String imgSrc = item.select(".img img").attr("src");
+                    String imgSrc = item.select("img").attr("src");
                     NewsExample newsExample = new NewsExample();
                     newsExample.createCriteria().andUrlEqualTo(href);
                     List<News> list = newsMapper.selectByExample(newsExample);
