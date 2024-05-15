@@ -138,9 +138,16 @@ public class SohuNewsPuller implements NewsPuller {
                 logger.info("开始根据新闻url访问新闻，获取新闻内容：{}", news.getUrl());
                 Document newsHtml = null;
                 try {
+                    Elements articles = new Elements();
+                    Elements time = new Elements();
                     newsHtml = getHtmlFromUrl(news.getUrl(), false);
-                    Elements articles = newsHtml.select("div.text").select("article.article");
-                    Elements time = newsHtml.select("div.text").select("span.time");
+                    if ("体育".equals(news.getNewstype1()) || "教育".equals(news.getNewstype1())) {
+                        articles = newsHtml.select("div.text").select("article.article");
+                        time = newsHtml.select("div.text").select("span.time");
+                    } else if ("汽车".equals(news.getNewstype1())) {
+                        articles = newsHtml.select("div.content").select("article.article-text");
+                        time = newsHtml.select("div.content").select("span.l");
+                    }
                     // 正则表达式匹配yyyy-mm-dd HH:MM:SS格式的日期时间
                     String regex = "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})";
                     Pattern pattern = Pattern.compile(regex);
@@ -190,8 +197,12 @@ public class SohuNewsPuller implements NewsPuller {
             //根据新闻一级分类分别制定不同的爬取方式
             logger.info("开始遍历一级分类：{}下的二级分类，{}", news.getNewstype1(), news.getNewstype2());
             Document newsHtml = null;
+            if ("新车".equals(news.getNewstype2())) {
+                String newstype2 = news.getNewstype2();
+                logger.info("1");
+            }
             try {
-                newsHtml = getHtmlFromUrl(news.getUrl().startsWith("http") ? news.getUrl() : "https://www.sohu.com" + news.getUrl(), false);
+                newsHtml = getHtmlFromUrl(news.getUrl().startsWith("http") ? news.getUrl() : (!"汽车".equals(news.getNewstype1()) ? "https://www.sohu.com" : "https:") + news.getUrl(), false);
                 Elements newsElements = newsHtml.select(parameterMap.get(news.getNewstype2()));
 //                    int i=0;
                 for (Element item : newsElements) {
@@ -199,8 +210,14 @@ public class SohuNewsPuller implements NewsPuller {
                     // 获取href属性，需要注意的是href属性值可能是相对路径，需要根据实际情况转换为完整URL
                     String href = item.select("a").attr("href");
                     // 补全相对URL（如果需要）
-                    if (!href.startsWith("http")) {
-                        href = "https://www.sohu.com" + href;
+                    if (!"汽车".equals(news.getNewstype1())) {
+                        if (!href.startsWith("http")) {
+                            href = "https://www.sohu.com" + href;
+                        }
+                    } else if ("汽车".equals(news.getNewstype1())) {
+                        if (!href.startsWith("https")) {
+                            href = "https:" + href;
+                        }
                     }
                     String title = "";
                     // 获取标题文本
@@ -208,6 +225,8 @@ public class SohuNewsPuller implements NewsPuller {
                         title = item.select(".title").text();
                     } else if ("体育".equals(news.getNewstype1())) {
                         title = item.text();
+                    } else if ("汽车".equals(news.getNewstype1())) {
+                        title = item.select("a").text();
                     }
                     // 获取图片src属性
                     String imgSrc = item.select("img").attr("src");
