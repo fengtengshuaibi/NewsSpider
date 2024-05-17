@@ -32,10 +32,10 @@ CREATE TABLE `im_source_data`  (
   `likes` int UNSIGNED NULL DEFAULT 0 COMMENT '点赞数',
   `belongs` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '所属栏目',
   `articleid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文章id',
-  `submitTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '入库时间yyyy-MM-dd hh:mm:ss',
+  `submitTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '入库时间yyyy-MM-dd HH:mm:ss',
   `keywords` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '关键词',
   `rank` int UNSIGNED NULL DEFAULT 0 COMMENT '序列',
-  `recordTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '新闻录入时间yyyy-MM-dd hh:mm:ss',
+  `recordTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '新闻录入时间yyyy-MM-dd HH:mm:ss',
   `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '新闻正文（如果有）',
   PRIMARY KEY (`autoincre`) USING BTREE,
   UNIQUE INDEX `priindex`(`autoincre` ASC) USING BTREE

@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Component("netEasyNationalNewsPuller")
 public class NetEasyNationalNewsPuller implements NewsPuller {
-    private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final Logger logger = LoggerFactory.getLogger(NetEasyNationalNewsPuller.class);
     @Autowired
     NewsMapper newsMapper;

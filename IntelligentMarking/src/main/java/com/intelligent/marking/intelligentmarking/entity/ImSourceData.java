@@ -83,7 +83,7 @@ public class ImSourceData {
     /**
      * Column: submitTime
      * Type: VARCHAR(30)
-     * Remark: 入库时间yyyy-MM-dd hh:mm:ss
+     * Remark: 入库时间yyyy-MM-dd HH:mm:ss
      */
     private String submittime;
 
@@ -105,7 +105,7 @@ public class ImSourceData {
     /**
      * Column: recordTime
      * Type: VARCHAR(30)
-     * Remark: 新闻录入时间yyyy-MM-dd hh:mm:ss
+     * Remark: 新闻录入时间yyyy-MM-dd HH:mm:ss
      */
     private String recordtime;
 

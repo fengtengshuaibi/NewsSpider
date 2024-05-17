@@ -25,8 +25,8 @@ CREATE TABLE `im_hot_info`  (
   `autoincre` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
   `keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '关键词',
   `articleid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文章id',
-  `submitTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '入库时间yyyy-MM-dd hh:mm:ss',
-  `recordTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '新闻录入时间yyyy-MM-dd hh:mm:ss',
+  `submitTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '入库时间yyyy-MM-dd HH:mm:ss',
+  `recordTime` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '新闻录入时间yyyy-MM-dd HH:mm:ss',
   `score` int UNSIGNED NULL DEFAULT 0 COMMENT '热点得分',
   PRIMARY KEY (`autoincre`) USING BTREE,
   UNIQUE INDEX `priindex`(`autoincre` ASC) USING BTREE

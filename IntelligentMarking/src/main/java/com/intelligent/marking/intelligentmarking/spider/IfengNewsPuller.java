@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Component("ifengNewsPuller")
 public class IfengNewsPuller implements NewsPuller {
-    private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final Logger logger = LoggerFactory.getLogger(IfengNewsPuller.class);
     @Value("${news.ifeng.url}")

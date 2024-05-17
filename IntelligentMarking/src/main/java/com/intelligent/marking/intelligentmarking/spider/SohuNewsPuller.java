@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class SohuNewsPuller implements NewsPuller {
 
     private static final Logger logger = LoggerFactory.getLogger(SohuNewsPuller.class);
-    private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static final SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Value("${news.sohu.url}")
     private String url;
     @Autowired
