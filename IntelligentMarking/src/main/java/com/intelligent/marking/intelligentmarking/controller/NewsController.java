@@ -63,6 +63,10 @@ public class NewsController {
     @Qualifier("sinaNewsForexPuller")
     private NewsPuller sinaNewsForexPuller;
 
+    @Autowired
+    @Qualifier("netEaseNewsPuller")
+    private NewsPuller netEaseNewsPuller;
+
     @ApiOperation(value = "爬虫拉取网易宏观新闻")
     @GetMapping("/pull/neteasyMacro")
     public void pullNeteasyMacroNews() {
@@ -119,6 +123,12 @@ public class NewsController {
     @GetMapping("/pull/sinaForex")
     public void pullSinaForex() {
         sinaNewsForexPuller.pullNews();
+    }
+
+    @ApiOperation(value = "爬虫拉取网易新闻")
+    @GetMapping("/pull/netease")
+    public void pullNetEaseNews() {
+        netEaseNewsPuller.pullNews();
     }
 
     @ApiOperation(value = "获取{source}新闻")

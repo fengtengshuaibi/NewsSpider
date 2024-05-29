@@ -43,6 +43,8 @@ news:
     fundurl: https://finance.sina.com.cn/fund/
     #股票
     stockurl: https://finance.sina.com.cn/stock/
+  netease:
+    url: https://www.163.com
 # logging
 logging:
   level:
